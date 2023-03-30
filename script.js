@@ -5,11 +5,12 @@ var map = L.map('map').setView([44.826, -0.555], 7,5);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
+var myGeoJSONLayer;
 
 // Chargez le fichier GeoJSON avec les polygones
 $.getJSON("epci2.geojson", function(data) {
   // Ajoutez les polygones à la carte
-  L.geoJSON(data, {
+  myGeoJSONLayer = L.geoJSON(data, {
     style: function(feature) {
         switch (feature.properties.AOM) {
           case 'NON': return {fillColor: "#ff0000", fillOpacity: 0.5};
@@ -40,10 +41,10 @@ $.getJSON("epci2.geojson", function(data) {
     }
     layer.bindPopup(popupContent);
   }
-            
-  }).addTo(map);
 });
 
+myGeoJSONLayer.addTo(map);
+  
  var toggleButton = L.Control.extend({
     options: {
       position: 'topright'

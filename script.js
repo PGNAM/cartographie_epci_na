@@ -27,7 +27,7 @@ $.getJSON("epci2.geojson", function(data) {
     style: function(feature) {
         switch (feature.properties.membrenam) {
           case 'OUI': return {color: "#000000", fillColor: "#ff0000", fillOpacity: 0};
-          case 'NON': return {color: "#ffffff", dashArray : 3, fillColor: "#0000ff", fillOpacity: 0};
+          case 'NON': return {color: "#ffffff", weight : 3, fillColor: "#0000ff", fillOpacity: 0};
           default: return {color: "#000000", fillColor: "#000000", fillOpacity: 0};
         }
 

@@ -39,3 +39,23 @@ $.getJSON("epci2.geojson", function(data) {
             
   }).addTo(map);
 });
+
+ var toggleButton = L.Control.extend({
+    options: {
+      position: 'topright'
+    },
+    onAdd: function(map) {
+      var button = L.DomUtil.create('button', 'toggle-button');
+      button.innerHTML = 'Toggle GeoJSON Layer';
+      L.DomEvent.addListener(button, 'click', function() {
+        if (map.hasLayer(myGeoJSONLayer)) {
+          map.removeLayer(myGeoJSONLayer);
+        } else {
+          map.addLayer(myGeoJSONLayer);
+        }
+      });
+      return button;
+    }
+  });
+  map.addControl(new toggleButton());
+});

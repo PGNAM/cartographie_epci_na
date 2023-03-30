@@ -6,49 +6,36 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Déclarez une variable pour stocker la couche GeoJSON
-var myGeoJSONLayer;
-
 // Chargez le fichier GeoJSON avec les polygones
 $.getJSON("epci2.geojson", function(data) {
-  // Créez la couche GeoJSON
-  myGeoJSONLayer = L.geoJSON(data, {
+  // Ajoutez les polygones à la carte
+  L.geoJSON(data, {
     style: function(feature) {
-      switch (feature.properties.AOM) {
-        case 'NON': return {color:"#ff0000",opacity : 0.7,fillColor: "#ff0000", fillOpacity: 0.5};
-        case 'OUI': return {fillColor: "#0000ff", fillOpacity: 0.5};
-        default: return {color: "#000000", fillColor: "#000000", fillOpacity: 0.5};
-      }
-    },
-    onEachFeature: function(feature, layer) {
-      var popupContent = "<strong>" + feature.properties.epci_name + "</strong><br><strong>AOM : </strong>" + feature.properties.AOM;
-      if (feature.properties.bassin && feature.properties.bassin.trim() !== '') {
-        popupContent += "<br><strong>Bassin</strong> : "+ feature.properties.bassin;
-      }
-      layer.bindPopup(popupContent);
-    }
-  });
-
-  // Ajoutez la couche GeoJSON à la carte
-  myGeoJSONLayer.addTo(map);
-
-  // Ajoutez un bouton pour activer ou désactiver la couche GeoJSON
-  var toggleButton = L.Control.extend({
-    options: {
-      position: 'topright'
-    },
-    onAdd: function(map) {
-      var button = L.DomUtil.create('button', 'toggle-button');
-      button.innerHTML = 'EPCI AOM';
-      L.DomEvent.addListener(button, 'click', function() {
-        if (map.hasLayer(myGeoJSONLayer)) {
-          map.removeLayer(myGeoJSONLayer);
-        } else {
-          map.addLayer(myGeoJSONLayer);
+        switch (feature.properties.AOM) {
+          case 'NON': return {fillColor: "#ff0000", fillOpacity: 0.5};
+          case 'OUI': return {fillColor: "#0000ff", fillOpacity: 0.5};
+          default: return {color: "#000000", fillColor: "#000000", fillOpacity: 0.5};
         }
-      });
-      return button;
-    }
-  });
-  map.addControl(new toggleButton());
+
+       },
+            
+
+  }).addTo(map);
+
+
+  L.geoJSON(data, {
+    style: function(feature) {
+        switch (feature.properties.membrenam) {
+          case 'OUI': return {color: "#000000", fillColor: "#ff0000", fillOpacity: 0};
+          case 'NON': return {color: "#ffffff", dashArray : 3, fillColor: "#0000ff", fillOpacity: 0};
+          default: return {color: "#000000", fillColor: "#000000", fillOpacity: 0};
+        }
+
+       },
+
+       onEachFeature: function(feature, layer) {
+        layer.bindPopup("<strong>" + feature.properties.epci_name + "</strong><br>AOM : " + feature.properties.AOM + "<br>Bassin : "+ feature.properties.bassin);;
+      }
+            
+  }).addTo(map);
 });

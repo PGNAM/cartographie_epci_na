@@ -34,8 +34,12 @@ $.getJSON("epci2.geojson", function(data) {
        },
 
        onEachFeature: function(feature, layer) {
-        layer.bindPopup("<strong>" + feature.properties.epci_name + "</strong><br>AOM : " + feature.properties.AOM + "<br>Bassin : "+ feature.properties.bassin);;
-      }
+    var popupContent = "<strong>" + feature.properties.epci_name + "</strong><br><strong>AOM :</strong>" + feature.properties.AOM;
+    if (feature.properties.bassin && feature.properties.bassin.trim() !== '') {
+      popupContent += "<br><strong>Bassin</strong> : "+ feature.properties.bassin;
+    }
+    layer.bindPopup(popupContent);
+  }
             
   }).addTo(map);
 });

@@ -19,9 +19,7 @@ $.getJSON("epci2.geojson", function(data) {
         }
 
        },
-            
-
-  }).addTo(map);
+ 
 
 
   L.geoJSON(data, {
